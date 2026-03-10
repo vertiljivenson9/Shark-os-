@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.svg" alt="Shark OS Logo" width="200">
+  <img src="public/logo.png" alt="Shark OS Logo" width="200">
 </p>
 
 <h1 align="center">Shark OS</h1>
