@@ -98,3 +98,9 @@ MIT License - Úsalo libremente para cualquier propósito.
 <div align="center">
   <strong>🦈 Shark OS - Tu escritorio en la nube, gratis para siempre.</strong>
 </div>
+
+🚀 Live Demo
+
+⚠️ Note: The current live demo is running an older stable version.
+The latest version is available in this repository.
+A new demo will be deployed soon.
