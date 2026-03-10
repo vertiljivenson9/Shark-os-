@@ -141,3 +141,193 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
+/* ==================== SHARK OS v2 ADVANCED STYLES ==================== */
+
+/* Glassmorphism Cards */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Native OS Feel - Smooth Animations */
+@keyframes shark-fade-in {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes shark-slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shark-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes shark-pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+}
+
+.animate-shark-fade-in {
+  animation: shark-fade-in 0.3s ease-out forwards;
+}
+
+.animate-shark-slide-up {
+  animation: shark-slide-up 0.4s ease-out forwards;
+}
+
+.animate-shark-bounce {
+  animation: shark-bounce 0.5s ease-in-out;
+}
+
+.animate-shark-pulse-glow {
+  animation: shark-pulse-glow 2s ease-in-out infinite;
+}
+
+/* Window Shadows - Native Feel */
+.window-shadow {
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Dock Reflection */
+.dock-reflection {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
+}
+
+/* App Icon Hover Effect */
+.app-icon-hover {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.app-icon-hover:hover {
+  transform: scale(1.15);
+}
+
+.app-icon-hover:active {
+  transform: scale(0.95);
+}
+
+/* Context Menu Native Style */
+.context-menu {
+  background: rgba(30, 30, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  padding: 4px 0;
+  min-width: 200px;
+}
+
+.context-menu-item {
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.context-menu-item:hover {
+  background: rgba(59, 130, 246, 0.3);
+}
+
+/* Notification Native Style */
+.notification-toast {
+  background: rgba(40, 40, 40, 0.9);
+  backdrop-filter: blur(20px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Scrollbar Native Style */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Selection */
+::selection {
+  background: rgba(59, 130, 246, 0.4);
+}
+
+/* Focus Ring */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Loading Skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Blur backgrounds for modals */
+.blur-background {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Draggable Window Header */
+.drag-handle {
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Resize Handles */
+.resize-handle {
+  position: absolute;
+  background: transparent;
+}
+
+.resize-handle-n { top: 0; left: 10px; right: 10px; height: 4px; cursor: n-resize; }
+.resize-handle-s { bottom: 0; left: 10px; right: 10px; height: 4px; cursor: s-resize; }
+.resize-handle-e { right: 0; top: 10px; bottom: 10px; width: 4px; cursor: e-resize; }
+.resize-handle-w { left: 0; top: 10px; bottom: 10px; width: 4px; cursor: w-resize; }
+.resize-handle-ne { top: 0; right: 0; width: 10px; height: 10px; cursor: ne-resize; }
+.resize-handle-nw { top: 0; left: 0; width: 10px; height: 10px; cursor: nw-resize; }
+.resize-handle-se { bottom: 0; right: 0; width: 10px; height: 10px; cursor: se-resize; }
+.resize-handle-sw { bottom: 0; left: 0; width: 10px; height: 10px; cursor: sw-resize; }
