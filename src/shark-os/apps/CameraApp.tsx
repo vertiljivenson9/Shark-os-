@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Camera, RefreshCw, Circle, X } from 'lucide-react';
 import { kernel } from '../services/kernel';
+import { soundSystem } from '../services/media/SoundSystem';
 
 export const CameraApp: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -9,30 +10,34 @@ export const CameraApp: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [flash, setFlash] = useState(false);
 
-  useEffect(() => {
-    startCamera();
-    return () => stopCamera();
-  }, []);
+  const stopCamera = useCallback(() => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+  }, [stream]);
 
-  const startCamera = async () => {
+  const startCamera = useCallback(async () => {
     try {
       const s = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       setStream(s);
       if (videoRef.current) {
         videoRef.current.srcObject = s;
       }
+      setError(null);
     } catch (e: any) {
       setError("Camera Access Denied: " + e.message);
     }
-  };
+  }, []);
 
-  const stopCamera = () => {
-    stream?.getTracks().forEach(track => track.stop());
-  };
+  useEffect(() => {
+    startCamera();
+    return () => stopCamera();
+  }, [startCamera, stopCamera]);
 
   const takePhoto = async () => {
     if (videoRef.current && canvasRef.current) {
       setFlash(true);
+      soundSystem.play('click');
       setTimeout(() => setFlash(false), 150);
 
       const video = videoRef.current;
@@ -44,14 +49,12 @@ export const CameraApp: React.FC = () => {
         ctx.drawImage(video, 0, 0);
         const dataUrl = canvas.toDataURL('image/png');
         
-        // Save to VFS
         const filename = `IMG_${Date.now()}.png`;
         const path = `/user/home/photos/${filename}`;
         
-        // Convert DataURL to raw string (simplified for VFS text storage, ideally binary)
-        // In this VFS implementation we store strings, so DataURL is fine.
         await kernel.fs.write(path, dataUrl);
         kernel.notifications.push('Photo Saved', `Saved to ${path}`);
+        soundSystem.play('success');
       }
     }
   };
@@ -85,9 +88,12 @@ export const CameraApp: React.FC = () => {
 
       {/* Controls */}
       <div className="h-24 bg-black/80 backdrop-blur flex items-center justify-between px-8 absolute bottom-0 w-full z-10">
-         <div className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700" onClick={() => { stopCamera(); startCamera(); }}>
+         <button 
+           className="w-12 h-12 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700 active:scale-90 transition-all" 
+           onClick={() => { stopCamera(); startCamera(); }}
+         >
             <RefreshCw size={20} className="text-white"/>
-         </div>
+         </button>
 
          <button 
             onClick={takePhoto}
@@ -96,7 +102,7 @@ export const CameraApp: React.FC = () => {
             <div className="w-14 h-14 bg-white rounded-full" />
          </button>
 
-         <div className="w-12 h-12" /> {/* Spacer */}
+         <div className="w-12 h-12" />
       </div>
     </div>
   );

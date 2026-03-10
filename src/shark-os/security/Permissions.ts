@@ -91,7 +91,7 @@ export interface AppManifest {
 
 export class PermissionManager {
   private appPermissions = new Map<string, Map<Capability, AppPermission>>();
-  private listeners: ((appId: string, cap: Capability, granted: boolean) => void>[] = [];
+  private listeners: ((appId: string, cap: Capability, granted: boolean) => void)[] = [];
 
   // Solicitar permisos para una app
   async requestPermissions(appId: string, manifest: AppManifest): Promise<boolean[]> {

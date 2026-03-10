@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { kernel } from '../services/kernel';
 import { FilePicker } from '../components/FilePicker';
 import { Save, FolderOpen, RefreshCw } from 'lucide-react';
+import { soundSystem } from '../services/media/SoundSystem';
+import { toast } from '../components/Toast';
 
 interface EditorProps {
     file?: string;
@@ -13,45 +15,47 @@ export const EditorApp: React.FC<EditorProps> = ({ file }) => {
   const [status, setStatus] = useState('Ready');
   const [showPicker, setShowPicker] = useState(false);
 
+  const checkAndLoad = useCallback(async (path: string) => {
+    if (await kernel.fs.exists(path)) {
+      try {
+        const data = await kernel.fs.cat(path);
+        setContent(data);
+        setStatus(`Loaded ${path}`);
+      } catch (e: any) {
+        setStatus(`Read Error: ${e.message}`);
+      }
+    }
+  }, []);
+
   useEffect(() => {
-    // If props passed a file, use it. Otherwise use default
     const target = file || filePath;
     setFilePath(target);
     checkAndLoad(target);
-  }, [file]);
-
-  const checkAndLoad = async (path: string) => {
-      if (await kernel.fs.exists(path)) {
-          try {
-            const data = await kernel.fs.cat(path);
-            setContent(data);
-            setStatus(`Loaded ${path}`);
-          } catch (e: any) {
-            setStatus(`Read Error: ${e.message}`);
-          }
-      }
-  }
+  }, [file, checkAndLoad]);
 
   const loadFile = async () => {
     try {
+      soundSystem.play('click');
       setStatus('Loading...');
       if (await kernel.fs.exists(filePath)) {
         const data = await kernel.fs.cat(filePath);
         setContent(data);
         setStatus(`Loaded ${filePath}`);
+        toast.success('Archivo cargado', filePath);
       } else {
         setContent('');
         setStatus('New File (Path does not exist yet)');
       }
     } catch (e: any) {
       setStatus(`Error: ${e.message}`);
+      toast.error('Error', e.message);
     }
   };
 
   const saveFile = async () => {
     try {
+      soundSystem.play('click');
       setStatus('Saving...');
-      // Try to create parent directory if it's missing (shallow check)
       const parent = filePath.substring(0, filePath.lastIndexOf('/'));
       if (parent && parent !== '/' && !(await kernel.fs.exists(parent))) {
           await kernel.fs.mkdir(parent).catch(() => {});
@@ -59,8 +63,11 @@ export const EditorApp: React.FC<EditorProps> = ({ file }) => {
       
       await kernel.fs.write(filePath, content);
       setStatus(`Saved to ${filePath}`);
+      toast.success('Guardado', filePath);
+      soundSystem.play('success');
     } catch (e: any) {
       setStatus(`Error saving: ${e.message}`);
+      toast.error('Error al guardar', e.message);
     }
   };
 
@@ -82,7 +89,7 @@ export const EditorApp: React.FC<EditorProps> = ({ file }) => {
       <div className="flex items-center p-2 bg-gray-800 border-b border-gray-700 space-x-2">
         <button 
             onClick={() => setShowPicker(true)} 
-            className="p-1.5 hover:bg-gray-700 rounded text-blue-400 transition-colors" 
+            className="p-1.5 hover:bg-gray-700 rounded text-blue-400 transition-colors active:scale-95" 
             title="Open from Explorer"
         >
             <FolderOpen size={18} />
@@ -98,14 +105,14 @@ export const EditorApp: React.FC<EditorProps> = ({ file }) => {
         </div>
 
         <button 
-            className="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 text-xs rounded flex items-center gap-2 transition-colors" 
+            className="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 text-xs rounded flex items-center gap-2 transition-colors active:scale-95" 
             onClick={loadFile}
         >
             <RefreshCw size={14}/> Reload
         </button>
         
         <button 
-            className="bg-blue-600 hover:bg-blue-500 px-4 py-1.5 text-xs rounded flex items-center gap-2 font-bold transition-colors shadow-lg shadow-blue-900/30" 
+            className="bg-blue-600 hover:bg-blue-500 px-4 py-1.5 text-xs rounded flex items-center gap-2 font-bold transition-colors shadow-lg shadow-blue-900/30 active:scale-95" 
             onClick={saveFile}
         >
             <Save size={14}/> Save

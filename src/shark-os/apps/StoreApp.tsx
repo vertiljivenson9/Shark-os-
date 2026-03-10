@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { kernel } from '../services/kernel';
 import { Download, Check, Package, Search, Star, Trash2, HardDrive, AlertTriangle, Layers, Grid, X, ExternalLink, Key, ShieldCheck, Lock, ShoppingCart } from 'lucide-react';
 import { AppDefinition } from '../types';

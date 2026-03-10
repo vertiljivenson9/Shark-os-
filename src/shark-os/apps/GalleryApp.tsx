@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { kernel } from '../services/kernel';
 import { Image as ImageIcon, ArrowLeft, Trash2 } from 'lucide-react';
 
