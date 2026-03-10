@@ -284,3 +284,4 @@ MIT License - Use freely for any purpose.
 <p align="center">
   Made with ❤️ by the Shark OS Team
 </p>
+is live now check here https://shark-os.pages.dev/
