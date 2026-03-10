@@ -283,7 +283,7 @@ export const SearchApp: React.FC = () => {
                    </div>
                  )}
                  <iframe 
-                   ref={el => iframeRefs.current[tab.id] = el}
+                   ref={el => { iframeRefs.current[tab.id] = el; }}
                    src={tab.url}
                    className="w-full h-full border-none bg-white"
                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals"

@@ -68,29 +68,29 @@ const ICONS: Record<string, React.ReactNode> = {
   Default: <Grid size={28} className="text-gray-500" />
 };
 
-// Apps por defecto
+// Apps por defecto - ordenadas por importancia
 const DEFAULT_APPS: AppDefinition[] = [
   { id: 'terminal', name: 'Terminal', icon: 'Terminal', component: 'TerminalApp', version: '4.2' },
   { id: 'files', name: 'Explorer', icon: 'Folder', component: 'FilesApp', version: '4.1' },
-  { id: 'editor', name: 'Notepad', icon: 'FileText', component: 'EditorApp', version: '2.0' },
+  { id: 'developer', name: 'DevTools', icon: 'Cpu', component: 'DeveloperApp', version: '1.0' },
   { id: 'settings', name: 'Settings', icon: 'Settings', component: 'SettingsApp', version: '4.5' },
   { id: 'store', name: 'App Store', icon: 'ShoppingCart', component: 'StoreApp', version: '1.5' },
+  { id: 'ide', name: 'Studio', icon: 'Code', component: 'IDEApp', version: '5.1' },
+  { id: 'sys_mon', name: 'Monitor', icon: 'Activity', component: 'SystemMonitorApp', version: '2.0' },
+  { id: 'paint', name: 'Paint', icon: 'Palette', component: 'PaintApp', version: '2.0' },
+  { id: 'editor', name: 'Notepad', icon: 'FileText', component: 'EditorApp', version: '2.0' },
   { id: 'camera', name: 'Camera', icon: 'Camera', component: 'CameraApp', version: '3.0' },
   { id: 'gallery', name: 'Gallery', icon: 'Image', component: 'GalleryApp', version: '3.0' },
   { id: 'calculator', name: 'Calculator', icon: 'Calculator', component: 'CalculatorApp', version: '2.0' },
-  { id: 'ide', name: 'Studio', icon: 'Code', component: 'IDEApp', version: '5.1' },
-  { id: 'developer', name: 'DevTools', icon: 'Cpu', component: 'DeveloperApp', version: '1.0' },
   { id: 'git_sync', name: 'Replicator', icon: 'Zap', component: 'GitSyncApp', version: '15.13' },
-  { id: 'nexus_flux', name: 'Nexus', icon: 'Zap', component: 'NexusFluxApp', version: '1.0' },
   { id: 'music', name: 'Music', icon: 'Music', component: 'MusicApp', version: '2.0' },
   { id: 'video', name: 'Videos', icon: 'Film', component: 'VideoPlayerApp', version: '2.0' },
-  { id: 'paint', name: 'Paint', icon: 'Palette', component: 'PaintApp', version: '2.0' },
   { id: 'news', name: 'News', icon: 'Newspaper', component: 'NewsApp', version: '1.1' },
   { id: 'weather', name: 'Weather', icon: 'Sun', component: 'WeatherApp', version: '1.0' },
   { id: 'timeline', name: 'Timeline', icon: 'History', component: 'TimelineApp', version: '1.0' },
-  { id: 'sys_mon', name: 'Monitor', icon: 'Activity', component: 'SystemMonitorApp', version: '2.0' },
   { id: 'zip_export', name: 'Backup', icon: 'Archive', component: 'ZipExportApp', version: '1.0' },
-  { id: 'clock', name: 'Clock', icon: 'Clock', component: 'ClockApp', version: '1.0' }
+  { id: 'clock', name: 'Clock', icon: 'Clock', component: 'ClockApp', version: '1.0' },
+  { id: 'nexus_flux', name: 'Nexus', icon: 'Zap', component: 'NexusFluxApp', version: '1.0' }
 ];
 
 const SharkOSApp: React.FC = () => {
@@ -317,13 +317,13 @@ const SharkOSApp: React.FC = () => {
           </div>
         )}
 
-        {/* Layout móvil - App Drawer */}
+        {/* Layout móvil - Pantalla de inicio con todas las apps */}
         {isMobile && (
           <>
-            {/* Home screen minimalista con apps favoritas */}
-            <div className="absolute inset-0 pt-12 pb-24 px-4 overflow-hidden">
-              <div className="grid grid-cols-4 gap-4 content-start">
-                {installedApps.slice(0, 8).map(app => (
+            {/* Home screen con todas las apps en grid desplazable */}
+            <div className="absolute inset-0 pt-12 pb-20 px-3 overflow-y-auto no-scrollbar">
+              <div className="grid grid-cols-4 gap-3 content-start pb-4">
+                {installedApps.map(app => (
                   <div 
                     key={app.id} 
                     className="flex flex-col items-center active:scale-90 transition-transform"
@@ -340,7 +340,7 @@ const SharkOSApp: React.FC = () => {
               </div>
             </div>
 
-            {/* App Drawer Modal */}
+            {/* App Drawer Modal con búsqueda */}
             {showAppDrawer && (
               <div className="absolute inset-0 z-40 bg-black/80 backdrop-blur-xl animate-slide-up">
                 <div className="pt-14 px-4 pb-4 h-full flex flex-col">

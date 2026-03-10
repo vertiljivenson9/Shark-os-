@@ -503,7 +503,7 @@ export const SettingsApp: React.FC = () => {
                 <div className="text-blue-500 font-bold mb-2">KERNEL_STATUS</div>
                 UPTIME: {Math.floor((Date.now() - kernel.bootTime) / 1000)}s<br/>
                 MEMORY: 4096MB_VIRTUAL<br/>
-                PROCESSES: {kernel.processes?.length || 0}<br/>
+                PROCESSES: {kernel.getProcesses().length}<br/>
                 STATE: STABLE
               </div>
             </div>
