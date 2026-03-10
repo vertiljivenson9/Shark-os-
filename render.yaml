@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: shark-os
+    env: node
+    plan: free
+    buildCommand: bun install && bun run build
+    startCommand: NODE_ENV=production bun .next/standalone/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
